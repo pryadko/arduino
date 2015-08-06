@@ -8,9 +8,13 @@ import java.util.Set;
 public class TypeMeasure {
     @Id
     @GeneratedValue
+    @Column(name="TYPE_MEASURE_ID")
     private int id;
+
+    @Column(name="TYPE_MEASURE_NAME")
     private String name;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "typeMeasure")
     private Set<Measure> measureSet;
 
     public int getId() {
@@ -28,7 +32,7 @@ public class TypeMeasure {
     public void setName(String name) {
         this.name = name;
     }
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "TY")
+
     public Set<Measure> getMeasureSet() {
         return measureSet;
     }

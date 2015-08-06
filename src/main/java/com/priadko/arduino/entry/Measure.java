@@ -9,10 +9,17 @@ import java.sql.Date;
 public class Measure {
     @Id
     @GeneratedValue
+    @Column(name="MEASURE_ID")
     private int id;
 
+    @Column(name="VALUE")
     private double value;
+
+    @ManyToOne
+    @JoinColumn(name="TYPE_MEASURE_ID")
     private TypeMeasure typeMeasure;
+
+    @Column(name="DATA_TIME")
     private Date dateTime;
 
     public int getId() {
@@ -30,8 +37,7 @@ public class Measure {
     public void setValue(double value) {
         this.value = value;
     }
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "", nullable = false)
+
     public TypeMeasure getTypeMeasure() {
         return typeMeasure;
     }

@@ -1,13 +1,19 @@
 package com.priadko;
 
+import com.priadko.arduino.entry.Measure;
+import com.priadko.arduino.entry.TypeMeasure;
+import com.priadko.arduino.util.HibernateUtil;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import org.hibernate.Session;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.Enumeration;
 
 /**
@@ -116,6 +122,21 @@ public class App implements SerialPortEventListener {
     }
 
     public static void main(String[] args) throws Exception {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        session.beginTransaction();
+        Measure measure = new Measure();
+        Calendar cal = Calendar.getInstance();
+        measure.setDateTime(new Date(cal.getTimeInMillis()));
+        TypeMeasure typeMeasure = new TypeMeasure();
+        typeMeasure.setName("test");
+        measure.setTypeMeasure(typeMeasure);
+        measure.setValue(10.1);
+
+        session.save(typeMeasure);
+
+        session.save(measure);
+        session.getTransaction().commit();
         App main = new App();
         main.initialize();
         Thread t = new Thread() {
