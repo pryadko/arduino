@@ -1,6 +1,8 @@
 package com.priadko.arduino.entry;
 
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -16,10 +18,11 @@ public class Measure {
     private double value;
 
     @ManyToOne
-    @JoinColumn(name="TYPE_MEASURE_ID")
+    @JoinColumn(name="type_measure_id")
     private TypeMeasure typeMeasure;
 
     @Column(name="DATA_TIME")
+    @Type(type="timestamp")
     private Date dateTime;
 
     public int getId() {

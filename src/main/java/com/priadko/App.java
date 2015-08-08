@@ -1,5 +1,8 @@
 package com.priadko;
 
+import com.priadko.arduino.dao.MeasureDao;
+import com.priadko.arduino.dao.MeasureDaoImpl;
+import com.priadko.arduino.dao.TypeMeasureDao;
 import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
 import com.priadko.arduino.util.HibernateUtil;
@@ -7,7 +10,6 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import org.hibernate.Session;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,6 +17,7 @@ import java.io.OutputStream;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Hello world!
@@ -113,6 +116,7 @@ public class App implements SerialPortEventListener {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
                 String inputLine = input.readLine();
+                saveMeasureToDB(parseMeasure(inputLine));
                 System.out.println(inputLine);
             } catch (Exception e) {
                 System.err.println(e.toString());
@@ -122,21 +126,7 @@ public class App implements SerialPortEventListener {
     }
 
     public static void main(String[] args) throws Exception {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        session.beginTransaction();
-        Measure measure = new Measure();
-        Calendar cal = Calendar.getInstance();
-        measure.setDateTime(new Date(cal.getTimeInMillis()));
-        TypeMeasure typeMeasure = new TypeMeasure();
-        typeMeasure.setName("test");
-        measure.setTypeMeasure(typeMeasure);
-        measure.setValue(10.1);
-
-        session.save(typeMeasure);
-
-        session.save(measure);
-        session.getTransaction().commit();
+        HibernateUtil.getSessionFactory().openSession();
         App main = new App();
         main.initialize();
         Thread t = new Thread() {
@@ -151,5 +141,41 @@ public class App implements SerialPortEventListener {
         };
         t.start();
         System.out.println("Started");
+    }
+
+    public Measure parseMeasure(String inputString) {
+        Measure measure = new Measure();
+        String[] st = inputString.split("=");
+        if ((st.length != 2)) return null;
+        String param = st[0].trim();
+        String value = st[1].trim().split(" ")[0];
+        Calendar cal = Calendar.getInstance();
+        Date date = new Date(cal.getTimeInMillis());
+        //date.setTime(cal.getTimeInMillis());
+        measure.setDateTime(date);
+        TypeMeasure typeMeasure = getTypeMeasureByName(param);
+        measure.setTypeMeasure(typeMeasure);
+        measure.setValue(Double.valueOf(value));
+
+        return measure;
+    }
+
+    public void saveMeasureToDB(Measure measure) {
+        if (measure != null) {
+            MeasureDao measureDao = new MeasureDaoImpl();
+            measureDao.create(measure);
+        }
+    }
+
+    public TypeMeasure getTypeMeasureByName(String s) {
+        TypeMeasureDao typeMeasureDao = new TypeMeasureDao();
+        List<TypeMeasure> typeMeasureByName = typeMeasureDao.getTypeMeasureByName(s);
+        if (typeMeasureByName.isEmpty()) {
+            TypeMeasure typeMeasure = new TypeMeasure();
+            typeMeasure.setName(s);
+            typeMeasureDao.create(typeMeasure);
+            return typeMeasure;
+        }
+        return typeMeasureByName.get(0);
     }
 }
