@@ -18,7 +18,7 @@ public class MeasureDaoImpl implements MeasureDao {
 
         session.save(measure);
         session.getTransaction().commit();
-        session.flush();
+        session.close();
     }
 
     @Override

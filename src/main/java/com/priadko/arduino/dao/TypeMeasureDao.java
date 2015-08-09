@@ -1,6 +1,5 @@
 package com.priadko.arduino.dao;
 
-import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
 import com.priadko.arduino.util.HibernateUtil;
 import org.hibernate.Query;
@@ -16,7 +15,7 @@ public class TypeMeasureDao {
 
         session.save(typeMeasure);
         session.getTransaction().commit();
-        session.flush();
+        session.close();
     }
 
     public void delete(TypeMeasure typeMeasure) {
