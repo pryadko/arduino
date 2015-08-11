@@ -9,6 +9,7 @@
         <property name="hibernate.connection.username">test</property>
         <property name="hibernate.connection.password">test</property>
         <property name="hbm2ddl.auto">create</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
 
         <mapping class="com.priadko.arduino.entry.Measure"/>
         <mapping class="com.priadko.arduino.entry.TypeMeasure"/>
