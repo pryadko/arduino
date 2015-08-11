@@ -32,10 +32,12 @@ public class TypeMeasureDao {
 
     public List<TypeMeasure> getTypeMeasureByName(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        session.beginTransaction();
         Query query = session.createQuery("from TypeMeasure as p where p.name=:name");
         query.setParameter("name", name);
         List l = query.list();
+        session.getTransaction().commit();
+        session.close();
         return l;
     }
 }
