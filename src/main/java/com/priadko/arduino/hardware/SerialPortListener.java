@@ -1,29 +1,24 @@
-package com.priadko;
+package com.priadko.arduino.hardware;
 
-import com.priadko.arduino.dao.MeasureDao;
-import com.priadko.arduino.dao.MeasureDaoImpl;
-import com.priadko.arduino.dao.TypeMeasureDao;
-import com.priadko.arduino.entry.Measure;
-import com.priadko.arduino.entry.TypeMeasure;
-import com.priadko.arduino.util.HibernateUtil;
+import com.priadko.arduino.services.DataService;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.Enumeration;
-import java.util.List;
 
-/**
- * Hello world!
- */
-public class App implements SerialPortEventListener {
-    SerialPort serialPort;
+public class SerialPortListener implements SerialPortEventListener {
+
+    @Autowired
+    private DataService dataService;
+
+    private SerialPort serialPort;
     /**
      * The port we're normally going to use.
      */
@@ -109,73 +104,17 @@ public class App implements SerialPortEventListener {
         }
     }
 
-    /**
-     * Handle an event on the serial port. Read the data and print it.
-     */
-    public synchronized void serialEvent(SerialPortEvent oEvent) {
-        if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+    @Override
+    public void serialEvent(SerialPortEvent serialPortEvent) {
+        if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
                 String inputLine = input.readLine();
-                saveMeasureToDB(parseMeasure(inputLine));
+                dataService.writeMeasure(inputLine);
                 System.out.println(inputLine);
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
         }
         // Ignore all the other eventTypes, but you should consider the other ones.
-    }
-
-    public static void main(String[] args) throws Exception {
-        HibernateUtil.getSessionFactory().openSession();
-        App main = new App();
-        main.initialize();
-        Thread t = new Thread() {
-            public void run() {
-                //the following line will keep this app alive for 1000 seconds,
-                //waiting for events to occur and responding to them (printing incoming messages to console).
-                try {
-                    Thread.sleep(1000000);
-                } catch (InterruptedException ie) {
-                }
-            }
-        };
-        t.start();
-        System.out.println("Started");
-    }
-
-    public Measure parseMeasure(String inputString) {
-        Measure measure = new Measure();
-        String[] st = inputString.split("=");
-        if ((st.length != 2)) return null;
-        String param = st[0].trim();
-        String value = st[1].trim().split(" ")[0];
-        Calendar cal = Calendar.getInstance();
-        Date date = new Date(cal.getTimeInMillis());
-        //date.setTime(cal.getTimeInMillis());
-        measure.setDateTime(date);
-        TypeMeasure typeMeasure = getTypeMeasureByName(param);
-        measure.setTypeMeasure(typeMeasure);
-        measure.setValue(Double.valueOf(value));
-
-        return measure;
-    }
-
-    public void saveMeasureToDB(Measure measure) {
-        if (measure != null) {
-            MeasureDao measureDao = new MeasureDaoImpl();
-            measureDao.create(measure);
-        }
-    }
-
-    public TypeMeasure getTypeMeasureByName(String s) {
-        TypeMeasureDao typeMeasureDao = new TypeMeasureDao();
-        List<TypeMeasure> typeMeasureByName = typeMeasureDao.getTypeMeasureByName(s);
-        if (typeMeasureByName.isEmpty()) {
-            TypeMeasure typeMeasure = new TypeMeasure();
-            typeMeasure.setName(s);
-            typeMeasureDao.create(typeMeasure);
-            return typeMeasure;
-        }
-        return typeMeasureByName.get(0);
     }
 }

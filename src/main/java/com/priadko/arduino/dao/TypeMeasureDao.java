@@ -1,43 +1,18 @@
 package com.priadko.arduino.dao;
 
 import com.priadko.arduino.entry.TypeMeasure;
-import com.priadko.arduino.util.HibernateUtil;
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import java.util.List;
 
-public class TypeMeasureDao {
-    public void create(TypeMeasure typeMeasure) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+public interface TypeMeasureDao {
+    void create(TypeMeasure typeMeasure);
 
-        session.beginTransaction();
+    void delete(TypeMeasure typeMeasure);
 
-        session.save(typeMeasure);
-        session.getTransaction().commit();
-        session.close();
-    }
+    void add(TypeMeasure typeMeasure);
 
-    public void delete(TypeMeasure typeMeasure) {
+    List<TypeMeasure> getAll();
 
-    }
+    List getTypeMeasureByName(String name);
 
-    public void add(TypeMeasure typeMeasure) {
-
-    }
-
-    public List<TypeMeasure> getAll() {
-        return null;
-    }
-
-    public List<TypeMeasure> getTypeMeasureByName(String name) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("from TypeMeasure as p where p.name=:name");
-        query.setParameter("name", name);
-        List l = query.list();
-        session.getTransaction().commit();
-        session.close();
-        return l;
-    }
 }

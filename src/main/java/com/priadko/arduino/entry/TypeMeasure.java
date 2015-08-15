@@ -1,11 +1,17 @@
 package com.priadko.arduino.entry;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "TYPE_MEASURE")
-public class TypeMeasure {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class TypeMeasure implements Serializable {
+
     @Id
     @GeneratedValue
     @Column(name="TYPE_MEASURE_ID")
@@ -15,6 +21,7 @@ public class TypeMeasure {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "typeMeasure")
+    @JsonIgnore
     private Set<Measure> measureSet;
 
     public int getId() {

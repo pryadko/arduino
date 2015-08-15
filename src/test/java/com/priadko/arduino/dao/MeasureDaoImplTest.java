@@ -1,5 +1,6 @@
 package com.priadko.arduino.dao;
 
+import com.priadko.arduino.dao.impl.MeasureDaoImpl;
 import com.priadko.arduino.entry.Measure;
 import org.junit.Ignore;
 import org.junit.Test;
