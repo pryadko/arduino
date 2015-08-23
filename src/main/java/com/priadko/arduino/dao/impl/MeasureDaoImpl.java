@@ -5,8 +5,8 @@ import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +16,10 @@ public class MeasureDaoImpl implements MeasureDao {
     SessionFactory sessionFactory;
 
     @Override
+    @Transactional
     public void create(Measure measure) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.save(measure);
-        transaction.commit();
-        session.close();
     }
 
     @Override
@@ -30,12 +28,10 @@ public class MeasureDaoImpl implements MeasureDao {
     }
 
     @Override
+    @Transactional
     public List getAll() {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         List measureList = session.createCriteria(Measure.class).list();
-        transaction.commit();
-        session.close();
         return measureList;
     }
 

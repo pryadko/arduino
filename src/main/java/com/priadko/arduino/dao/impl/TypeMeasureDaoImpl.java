@@ -5,8 +5,8 @@ import com.priadko.arduino.entry.TypeMeasure;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +16,10 @@ public class TypeMeasureDaoImpl implements TypeMeasureDao {
     SessionFactory sessionFactory;
 
     @Override
+    @Transactional
     public void create(TypeMeasure typeMeasure) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.save(typeMeasure);
-        transaction.commit();
-        session.close();
     }
 
     @Override
@@ -40,14 +38,12 @@ public class TypeMeasureDaoImpl implements TypeMeasureDao {
     }
 
     @Override
+    @Transactional
     public List<TypeMeasure> getTypeMeasureByName(String name) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from TypeMeasure as p where p.name=:name");
         query.setParameter("name", name);
         List l = query.list();
-        transaction.commit();
-        session.close();
         return l;
     }
 }

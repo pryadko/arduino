@@ -6,9 +6,9 @@ import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
 import com.priadko.arduino.services.DataService;
 import com.priadko.arduino.util.ParseMeasure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -16,6 +16,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class DataServiceImpl implements DataService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DataServiceImpl.class);
 
     @Autowired
     MeasureDao measureDao;
@@ -27,23 +29,21 @@ public class DataServiceImpl implements DataService {
     public void writeMeasure(String string) {
         Measure measure = ParseMeasure.parseMeasure(string);
 
-        Calendar cal = Calendar.getInstance();
-        Date date = new Date(cal.getTimeInMillis());
+        if (measure == null) {return;}
 
+        String nameOfTypeMeasure = measure.getTypeMeasure().getName();
+        List typeMeasureByName = typeMeasureDao.getTypeMeasureByName(nameOfTypeMeasure);
 
-
-        if (measure != null) {
-            String nameOfTypeMeasure = measure.getTypeMeasure().getName();
-            List typeMeasureByName = typeMeasureDao.getTypeMeasureByName(nameOfTypeMeasure);
-            if (typeMeasureByName.isEmpty()) {
-                typeMeasureDao.create(measure.getTypeMeasure());
-                typeMeasureByName = typeMeasureDao.getTypeMeasureByName(nameOfTypeMeasure);
-            }
-            measure.setTypeMeasure((TypeMeasure) typeMeasureByName.get(0));
-            measure.setDateTime(new Timestamp(date.getTime()));
-            create(measure);
+        if (typeMeasureByName.isEmpty()) {
+            LOG.warn("Not found type of measure = {}, value will be skipped.", nameOfTypeMeasure);
+            return;
         }
 
+        Calendar cal = Calendar.getInstance();
+        Date date = new Date(cal.getTimeInMillis());
+        measure.setTypeMeasure((TypeMeasure) typeMeasureByName.get(0));
+        measure.setDateTime(new Timestamp(date.getTime()));
+        create(measure);
     }
 
     @Override
