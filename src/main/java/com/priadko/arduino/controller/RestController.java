@@ -1,17 +1,10 @@
 package com.priadko.arduino.controller;
 
-import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.services.DataService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/measure")
@@ -20,10 +13,10 @@ public class RestController {
     @Autowired
     private DataService dataService;
 
-    public static final Logger LOGGER = Logger.getLogger(RestController.class);
+    public static final Logger LOG = Logger.getLogger(RestController.class);
 
     /* Submit form in Spring Restful Services */
-    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+/*    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     void createMeasure(@RequestBody Measure measure) {
         try {
@@ -31,7 +24,7 @@ public class RestController {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(),e);
         }
-    }
+    }*/
 
 /*    *//* Ger a single objct in Json form in Spring Rest Services *//*
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -48,7 +41,7 @@ public class RestController {
     }*/
 
     /* Getting List of objects in Json format in Spring Restful Services */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+/*    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public @ResponseBody
     List<Measure> getEmployee() {
 
@@ -61,7 +54,7 @@ public class RestController {
         }
 
         return measureList;
-    }
+    }*/
 
   /*  *//* Delete an object from DB in Spring Restful Services *//*
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)

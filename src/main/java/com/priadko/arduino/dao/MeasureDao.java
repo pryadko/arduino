@@ -1,7 +1,6 @@
 package com.priadko.arduino.dao;
 
 import com.priadko.arduino.entry.Measure;
-import com.priadko.arduino.entry.TypeMeasure;
 
 import java.util.List;
 
@@ -12,5 +11,5 @@ public interface MeasureDao {
 
     List getAll();
 
-    List<Measure> getMeasureByType(TypeMeasure typeMeasure);
+    List getMeasureByType(String name);
 }

@@ -9,10 +9,8 @@ public interface TypeMeasureDao {
 
     void delete(TypeMeasure typeMeasure);
 
-    void add(TypeMeasure typeMeasure);
+    List getAll();
 
-    List<TypeMeasure> getAll();
-
-    List getTypeMeasureByName(String name);
+    TypeMeasure getTypeMeasureByName(String name);
 
 }

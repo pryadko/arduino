@@ -17,7 +17,7 @@ public class TypeMeasure implements Serializable {
     @Column(name="TYPE_MEASURE_ID")
     private int id;
 
-    @Column(name="TYPE_MEASURE_NAME")
+    @Column(name="TYPE_MEASURE_NAME", unique = true)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "typeMeasure")

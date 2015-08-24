@@ -1,17 +1,14 @@
 package com.priadko.arduino.web;
 
 import com.priadko.arduino.hardware.SerialPortListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-public class HardwareLisener implements ServletContextListener {
+public class HardwareListener implements ServletContextListener {
 
     private SerialPortListener serialPortListener;
 

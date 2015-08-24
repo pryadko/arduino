@@ -24,26 +24,22 @@ public class TypeMeasureDaoImpl implements TypeMeasureDao {
 
     @Override
     public void delete(TypeMeasure typeMeasure) {
-
-    }
-
-    @Override
-    public void add(TypeMeasure typeMeasure) {
-
-    }
-
-    @Override
-    public List<TypeMeasure> getAll() {
-        return null;
+        // todo need implemented
     }
 
     @Override
     @Transactional
-    public List<TypeMeasure> getTypeMeasureByName(String name) {
+    public List getAll() {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createCriteria(TypeMeasure.class).list();
+    }
+
+    @Override
+    @Transactional
+    public TypeMeasure getTypeMeasureByName(String name) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from TypeMeasure as p where p.name=:name");
         query.setParameter("name", name);
-        List l = query.list();
-        return l;
+        return (TypeMeasure) query.uniqueResult();
     }
 }

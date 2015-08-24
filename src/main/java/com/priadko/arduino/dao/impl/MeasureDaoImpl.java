@@ -2,9 +2,10 @@ package com.priadko.arduino.dao.impl;
 
 import com.priadko.arduino.dao.MeasureDao;
 import com.priadko.arduino.entry.Measure;
-import com.priadko.arduino.entry.TypeMeasure;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,19 +25,23 @@ public class MeasureDaoImpl implements MeasureDao {
 
     @Override
     public void delete(Measure measure) {
-
+        // todo need implemented
     }
 
     @Override
     @Transactional
     public List getAll() {
         Session session = sessionFactory.getCurrentSession();
-        List measureList = session.createCriteria(Measure.class).list();
-        return measureList;
+        return session.createCriteria(Measure.class).list();
     }
 
     @Override
-    public List<Measure> getMeasureByType(TypeMeasure typeMeasure) {
-        return null;
+    @Transactional
+    public List getMeasureByType(String name) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria c = session.createCriteria(Measure.class, "measure");
+        c.createAlias("measure.typeMeasure", "typeMeasure");
+        c.add(Restrictions.eq("typeMeasure.name", name));
+        return c.list();
     }
 }

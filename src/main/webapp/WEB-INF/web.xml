@@ -21,7 +21,7 @@
 
     <listener>
         <listener-class>
-            com.priadko.arduino.web.HardwareLisener
+            com.priadko.arduino.web.HardwareListener
         </listener-class>
     </listener>
 

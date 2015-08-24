@@ -29,40 +29,39 @@ public class DataServiceImpl implements DataService {
     public void writeMeasure(String string) {
         Measure measure = ParseMeasure.parseMeasure(string);
 
-        if (measure == null) {return;}
+        if (measure == null) {
+            return;
+        }
 
         String nameOfTypeMeasure = measure.getTypeMeasure().getName();
-        List typeMeasureByName = typeMeasureDao.getTypeMeasureByName(nameOfTypeMeasure);
+        TypeMeasure typeMeasureByName = typeMeasureDao.getTypeMeasureByName(nameOfTypeMeasure);
 
-        if (typeMeasureByName.isEmpty()) {
+        if (typeMeasureByName == null) {
             LOG.warn("Not found type of measure = {}, value will be skipped.", nameOfTypeMeasure);
             return;
         }
 
         Calendar cal = Calendar.getInstance();
         Date date = new Date(cal.getTimeInMillis());
-        measure.setTypeMeasure((TypeMeasure) typeMeasureByName.get(0));
+        measure.setTypeMeasure(typeMeasureByName);
         measure.setDateTime(new Timestamp(date.getTime()));
-        create(measure);
-    }
-
-    @Override
-    public void create(Measure measure) {
         measureDao.create(measure);
     }
 
     @Override
-    public void delete(Measure measure) {
-        measureDao.delete(measure);
+    public List getAllByType(String name) {
+        return measureDao.getMeasureByType(name);
     }
 
     @Override
-    public List getAll() {
-        return measureDao.getAll();
+    public void createTypeMeasure(String name) {
+        TypeMeasure typeMeasure = new TypeMeasure();
+        typeMeasure.setName(name);
+        typeMeasureDao.create(typeMeasure);
     }
 
     @Override
-    public List<Measure> getMeasureByType(TypeMeasure typeMeasure) {
-        return measureDao.getMeasureByType(typeMeasure);
+    public List getAllTypeMeasure() {
+        return typeMeasureDao.getAll();
     }
 }
