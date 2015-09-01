@@ -1,5 +1,8 @@
 package com.priadko.arduino.services;
 
+import com.priadko.arduino.entry.Measure;
+
+import java.util.Calendar;
 import java.util.List;
 
 public interface DataService {
@@ -12,4 +15,9 @@ public interface DataService {
 
     List getAllTypeMeasure();
 
+    Measure getLastValuesByType(String name);
+
+    List getValuesByPeriod(String name, Calendar time1, Calendar time2);
+
+    Double getAvgValueByPeriod(String name, Calendar time1, Calendar time2);
 }

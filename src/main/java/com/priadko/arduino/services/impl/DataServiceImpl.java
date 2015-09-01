@@ -64,4 +64,19 @@ public class DataServiceImpl implements DataService {
     public List getAllTypeMeasure() {
         return typeMeasureDao.getAll();
     }
+
+    @Override
+    public Measure getLastValuesByType(String name) {
+        return  measureDao.getLastValuesByType(name);
+    }
+
+    @Override
+    public List getValuesByPeriod(String name, Calendar time1, Calendar time2) {
+        return measureDao.getValuesByPeriod(name, time1, time2);
+    }
+
+    @Override
+    public Double getAvgValueByPeriod(String name, Calendar time1, Calendar time2) {
+        return measureDao.getAvgValueByPeriod(name, time1, time2);
+    }
 }
