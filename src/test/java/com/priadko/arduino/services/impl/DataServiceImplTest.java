@@ -127,4 +127,21 @@ public class DataServiceImplTest {
         //then
         Assert.assertEquals(528.35, measure, 0);
     }
+
+    @Test()
+    @DatabaseSetup("/dbunit/calculetedData.xml")
+    public void shouldReturnEception() throws Exception{
+        //given
+        Calendar time1 = Calendar.getInstance();
+        Calendar time2 = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        time1.setTime(sdf.parse("2015-08-18 01:31:56.928"));
+        time2.setTime(sdf.parse("2015-08-18 01:31:56.929"));
+
+        //when
+        Double measure = dataService.getAvgValueByPeriod("Temperature", time1, time2);
+
+        //then
+        Assert.assertNull(measure);
+    }
 }

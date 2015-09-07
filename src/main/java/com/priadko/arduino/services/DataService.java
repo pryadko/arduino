@@ -20,4 +20,6 @@ public interface DataService {
     List getValuesByPeriod(String name, Calendar time1, Calendar time2);
 
     Double getAvgValueByPeriod(String name, Calendar time1, Calendar time2);
+
+    List<Double> getCountAvgValueForPeriod(String typeName, int count, Calendar time1, Calendar time2);
 }

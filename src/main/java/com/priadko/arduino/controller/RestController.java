@@ -1,10 +1,14 @@
 package com.priadko.arduino.controller;
 
+import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.services.DataService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/measure")
@@ -26,19 +30,19 @@ public class RestController {
         }
     }*/
 
-/*    *//* Ger a single objct in Json form in Spring Rest Services *//*
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public @ResponseBody
-    Employee getEmployee(@PathVariable("id") long id) {
-        Employee employee = null;
+    @RequestMapping(value = "last/{typeMeasure}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Measure getEmployee(@PathVariable("typeMeasure") String typeName) {
+        Measure measure = null;
         try {
-            employee = dataService.getEntityById(id);
+            measure = dataService.getLastValuesByType(typeName);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(), e);
         }
-        return employee;
-    }*/
+        return measure;
+    }
 
     /* Getting List of objects in Json format in Spring Restful Services */
 /*    @RequestMapping(value = "/list", method = RequestMethod.GET)

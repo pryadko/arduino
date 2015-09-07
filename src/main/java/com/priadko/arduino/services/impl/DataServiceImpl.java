@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DataServiceImpl implements DataService {
@@ -66,17 +68,35 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public Measure getLastValuesByType(String name) {
-        return  measureDao.getLastValuesByType(name);
+    public Measure getLastValuesByType(String typeName) {
+        return measureDao.getLastValuesByType(typeName);
     }
 
     @Override
-    public List getValuesByPeriod(String name, Calendar time1, Calendar time2) {
-        return measureDao.getValuesByPeriod(name, time1, time2);
+    public List getValuesByPeriod(String typeName, Calendar time1, Calendar time2) {
+        return measureDao.getValuesByPeriod(typeName, time1, time2);
     }
 
     @Override
-    public Double getAvgValueByPeriod(String name, Calendar time1, Calendar time2) {
-        return measureDao.getAvgValueByPeriod(name, time1, time2);
+    public Double getAvgValueByPeriod(String typeName, Calendar time1, Calendar time2) {
+        return measureDao.getAvgValueByPeriod(typeName, time1, time2);
+    }
+
+    @Override
+    public List<Double> getCountAvgValueForPeriod(String typeName, int count, Calendar time1, Calendar time2) {
+        List<Double> values = new ArrayList<>(count);
+
+        long timeLine = (time2.getTimeInMillis() - time1.getTimeInMillis()) / count;
+
+        for (int i = 0; i < count; i++) {
+            Calendar t1 = Calendar.getInstance();
+            t1.setTimeInMillis(timeLine * i);
+            Calendar t2 = Calendar.getInstance();
+            t2.setTimeInMillis(timeLine * (i + 1));
+
+            values.add(i, getAvgValueByPeriod(typeName, t1, t2));
+        }
+
+        return values;
     }
 }
