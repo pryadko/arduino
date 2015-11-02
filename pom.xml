@@ -10,7 +10,7 @@
     <properties>
         <spring.version>4.0.5.RELEASE</spring.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
-        <jdk.version>1.7</jdk.version>
+        <jdk.version>1.8</jdk.version>
         <context.path>SpringRestCrud</context.path>
         <slf4j.version>1.7.12</slf4j.version>
     </properties>
