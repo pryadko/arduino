@@ -9,7 +9,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <spring.version>4.2.2.RELEASE</spring.version>
-        <hibernate.version>4.3.11.Final</hibernate.version>
+        <hibernate.version>4.2.21.Final</hibernate.version>
         <jdk.version>1.8</jdk.version>
         <context.path>SpringRestCrud</context.path>
         <slf4j.version>1.7.12</slf4j.version>
@@ -94,6 +94,11 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
