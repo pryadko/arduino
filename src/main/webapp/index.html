@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="http://underscorejs.org/underscore-min.js"></script>
+        <script src="http://backbonejs.org/backbone-min.js"></script>
+    </head>
+	<body>
+   <h>Hello world!!!</h>
+   <div>Temperature: </div><div id="temperature"></div>
+    <script>
+        var Temperature = Backbone.Model.extend({
+            url:'rest/measure/last/Temperature'
+        });
+        var temperature = new Temperature;
+        setInterval(function() {
+            temperature.fetch();
+        }, 1000);
+        var TemperatureView = Backbone.View.extend({
+
+            initialize: function() {
+                this.listenTo(temperature, "change", this.render);
+            },
+
+            render: function() {
+                $('#temperature').html(temperature.get('value'))
+            }
+
+        });
+        var temperatureView = new TemperatureView();
+    </script>
+	</body>
+</html>
