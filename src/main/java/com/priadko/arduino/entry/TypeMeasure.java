@@ -1,7 +1,6 @@
 package com.priadko.arduino.entry;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +8,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "TYPE_MEASURE")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TypeMeasure implements Serializable {
 
     @Id

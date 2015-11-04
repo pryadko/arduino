@@ -1,17 +1,14 @@
 package com.priadko.arduino.entry;
 
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "MEASURE")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Measure implements Serializable {
 
     @Id

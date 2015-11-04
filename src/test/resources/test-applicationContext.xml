@@ -9,9 +9,7 @@
  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-    <context:component-scan base-package="com.priadko.arduino.controller"/>
-    <context:component-scan base-package="com.priadko.arduino.web"/>
-    <context:component-scan base-package="com.priadko.arduino.hardware"/>
+    <context:component-scan base-package="com.priadko.arduino"/>
 
     <mvc:annotation-driven />
     <tx:annotation-driven/>
@@ -46,13 +44,6 @@
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-
-    <bean id="persistenceExceptionTranslationPostProcessor"
-          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-
-    <bean id="measureDao" class="com.priadko.arduino.dao.impl.MeasureDaoImpl"/>
-    <bean id="typeMeasureDao" class="com.priadko.arduino.dao.impl.TypeMeasureDaoImpl"/>
-    <bean id="dataService" class="com.priadko.arduino.services.impl.DataServiceImpl"/>
 
     <bean id="serialPortListener" class="com.priadko.arduino.hardware.SerialPortListener"/>
 
