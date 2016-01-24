@@ -1,17 +1,20 @@
 package com.priadko.arduino.controller;
 
 import com.priadko.arduino.entry.Measure;
+import com.priadko.arduino.entry.Mock;
 import com.priadko.arduino.services.DataService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
+
+import javax.websocket.server.ServerEndpoint;
 
 @Controller
 @RequestMapping("/measure")
+@ServerEndpoint("/measure/mockws")
 public class RestController {
 
     @Autowired
@@ -73,4 +76,50 @@ public class RestController {
         }
 
     }*/
+
+
+    @RequestMapping(value = "mock", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Mock getMeasureMock() {
+        return dataService.getMeasureMock();
+    }
+
+/*    @RequestMapping(value = "mockLong", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Mock getMeasureMockLong() {
+        boolean initialValue = dataService.getMeasureMock().getValue();
+        do{
+
+        } while (initialValue == dataService.getMeasureMock().getValue());
+        return dataService.getMeasureMock();
+    }*/
+
+    @RequestMapping(value = "mockLong", method=RequestMethod.GET)
+    @ResponseBody
+    public DeferredResult<Mock> getMessages() {
+
+        return dataService.getDeferredMeasureMock();
+    }
+
+    @RequestMapping(value = "/mock", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    @Async
+    void setMeasureMock(@RequestBody Mock mock) {
+        dataService.setMeasureMock(mock);
+    }
+
+    @RequestMapping(value = "mockLongSwitch", method=RequestMethod.GET)
+    @ResponseBody
+    public void getMessagesToLong() {
+
+        Mock mock = dataService.getMeasureMock();
+        mock.setValue(!mock.getValue());
+
+
+        dataService.setMeasureMock(mock);
+    }
+
 }
