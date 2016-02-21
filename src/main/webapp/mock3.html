@@ -33,7 +33,7 @@
             return;
         }
         // Create a new instance of the websocket
-        webSocket = new WebSocket("ws://localhost:8080/arduino/rest/echo");
+        webSocket = new WebSocket("ws://localhost:8080/arduino/measureMock");
 
         /**
          * Binds functions to the listeners for the websocket.
@@ -52,7 +52,7 @@
             writeResponse(event.data);
         };
 
-        webSocket.onclose = function(event){
+        webSocket.onclose = function(){
             writeResponse("Connection closed");
         };
     }

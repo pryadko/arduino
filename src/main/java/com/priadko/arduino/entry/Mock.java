@@ -1,7 +1,7 @@
 package com.priadko.arduino.entry;
 
 public class Mock {
-        Boolean value;
+        private Boolean value;
 
         public Boolean getValue() {
             return value;

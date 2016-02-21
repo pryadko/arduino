@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-    <TYPE_MEASURE TYPE_MEASURE_ID="1" TYPE_MEASURE_NAME="Temperature"/>
-    <TYPE_MEASURE TYPE_MEASURE_ID="2" TYPE_MEASURE_NAME="Pressure"/>
-    <MEASURE MEASURE_ID="1" VALUE="12.05" type_measure_id="2" DATA_TIME="2015-08-16 01:31:56.928"/>
-</dataset>

@@ -1,83 +1,50 @@
 package com.priadko.arduino.controller;
 
-import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.Mock;
+import com.priadko.arduino.repository.SessionHandler;
 import com.priadko.arduino.services.DataService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.socket.server.standard.SpringConfigurator;
 
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/measure")
-@ServerEndpoint("/measure/mockws")
+@ServerEndpoint(value = "/measureMock", configurator = SpringConfigurator.class)
 public class RestController {
 
     @Autowired
     private DataService dataService;
 
-    public static final Logger LOG = Logger.getLogger(RestController.class);
+    @Autowired
+    private SessionHandler sessionHandler;
 
-    /* Submit form in Spring Restful Services */
-/*    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    void createMeasure(@RequestBody Measure measure) {
-        try {
-            dataService.create(measure);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(),e);
-        }
-    }*/
-
-    @RequestMapping(value = "last/{typeMeasure}", method = RequestMethod.GET)
+    /**
+     * main method for change state Mock variable
+     * @param mock value from client
+     */
+    @RequestMapping(value = "/mock", method = RequestMethod.POST)
     public
     @ResponseBody
-    Measure getEmployee(@PathVariable("typeMeasure") String typeName) {
-        Measure measure = null;
-        try {
-            measure = dataService.getLastValuesByType(typeName);
-
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return measure;
+    @Async
+    void setMeasureMock(@RequestBody Mock mock) {
+        sessionHandler.toggleMock();
+        dataService.setMeasureMock(mock);
     }
 
-    /* Getting List of objects in Json format in Spring Restful Services */
-/*    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody
-    List<Measure> getEmployee() {
-
-        List<Measure> measureList = null;
-        try {
-            measureList = dataService.getAll();
-
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-
-        return measureList;
-    }*/
-
-  /*  *//* Delete an object from DB in Spring Restful Services *//*
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public @ResponseBody
-    Status deleteEmployee(@PathVariable("id") long id) {
-
-        try {
-            dataService.deleteEntity(id);
-            return new Status(1, "Employee deleted Successfully !");
-        } catch (Exception e) {
-            return new Status(0, e.toString());
-        }
-
-    }*/
-
-
+    /**
+     * simple example for get request
+     * @return return value to client
+     */
     @RequestMapping(value = "mock", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -85,17 +52,10 @@ public class RestController {
         return dataService.getMeasureMock();
     }
 
-/*    @RequestMapping(value = "mockLong", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Mock getMeasureMockLong() {
-        boolean initialValue = dataService.getMeasureMock().getValue();
-        do{
-
-        } while (initialValue == dataService.getMeasureMock().getValue());
-        return dataService.getMeasureMock();
-    }*/
-
+    /**
+     * long pooling get
+     * @return loon pooling answer
+     */
     @RequestMapping(value = "mockLong", method=RequestMethod.GET)
     @ResponseBody
     public DeferredResult<Mock> getMessages() {
@@ -103,23 +63,30 @@ public class RestController {
         return dataService.getDeferredMeasureMock();
     }
 
-    @RequestMapping(value = "/mock", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    @Async
-    void setMeasureMock(@RequestBody Mock mock) {
-        dataService.setMeasureMock(mock);
+    @OnOpen
+    public void onOpen(Session session){
+        sessionHandler.addSession(session);
     }
 
-    @RequestMapping(value = "mockLongSwitch", method=RequestMethod.GET)
-    @ResponseBody
-    public void getMessagesToLong() {
-
-        Mock mock = dataService.getMeasureMock();
-        mock.setValue(!mock.getValue());
-
-
-        dataService.setMeasureMock(mock);
+    /**
+     * example for web socket
+     * @param measureMock input value from websooet
+     * @param session user session
+     */
+    @OnMessage
+    public void onMessage(String measureMock, Session session){
+        sessionHandler.toggleMock();
     }
+
+    /**
+     * The user closes the connection.
+     *
+     * Note: you can't send messages to the client from this method
+     */
+    @OnClose
+    public void onClose(Session session){
+        sessionHandler.removeSession(session);
+    }
+
 
 }

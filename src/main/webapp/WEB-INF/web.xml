@@ -1,7 +1,7 @@
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
-		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd"
+		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
     <display-name>Sample Spring Maven Project</display-name>
@@ -20,12 +20,6 @@
         <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
     </servlet>
-
-<!--    <listener>
-        <listener-class>
-            com.priadko.arduino.web.HardwareListener
-        </listener-class>
-    </listener>-->
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
