@@ -5,7 +5,7 @@ import com.priadko.arduino.dao.TypeMeasureDao;
 import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
 import com.priadko.arduino.services.DataService;
-import com.priadko.arduino.util.ParseMeasure;
+import com.priadko.arduino.util.ParseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,13 @@ public class DataServiceImpl implements DataService {
     TypeMeasureDao typeMeasureDao;
 
     @Override
+    public void writeMeasure(Measure measure) {
+
+    }
+
+    @Override
     public void writeMeasure(String string) {
-        Measure measure = ParseMeasure.parseMeasure(string);
+        Measure measure = ParseUtil.parseMeasure(string);
 
         if (measure == null) {
             return;

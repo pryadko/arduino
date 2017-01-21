@@ -3,7 +3,7 @@ package com.priadko.arduino.util;
 import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
 
-public final class ParseMeasure {
+public final class ParseUtil {
     public static Measure parseMeasure(String inputString) {
         if ((inputString.trim().length() == 0)) return null;
 

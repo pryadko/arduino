@@ -1,21 +1,20 @@
 package com.priadko.arduino.hardware;
 
-import com.priadko.arduino.services.DataService;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Observable;
 
-public class SerialPortListener implements SerialPortEventListener {
-
-    @Autowired
-    private DataService dataService;
+@Service
+public class SerialPortListener extends Observable implements SerialPortEventListener {
 
     private SerialPort serialPort;
     /**
@@ -46,6 +45,20 @@ public class SerialPortListener implements SerialPortEventListener {
      */
     private static final int DATA_RATE = 9600;
 
+    @Override
+    public void serialEvent(SerialPortEvent serialPortEvent) {
+        if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+            try {
+                setChanged();
+                notifyObservers(input.readLine());
+            } catch (Exception e) {
+                System.err.println(e.toString());
+            }
+        }
+        // Ignore all the other eventTypes, but you should consider the other ones.
+    }
+
+    @PostConstruct
     public void initialize() {
         // the next line is for Raspberry Pi and
         // gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
@@ -101,19 +114,5 @@ public class SerialPortListener implements SerialPortEventListener {
             serialPort.removeEventListener();
             serialPort.close();
         }
-    }
-
-    @Override
-    public void serialEvent(SerialPortEvent serialPortEvent) {
-        if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-            try {
-                String inputLine = input.readLine();
-                dataService.writeMeasure(inputLine);
-                System.out.println(inputLine);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
-        }
-        // Ignore all the other eventTypes, but you should consider the other ones.
     }
 }

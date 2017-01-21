@@ -11,7 +11,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature = 12.5 *C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.5d, actualMeasure.getValue(), 0.0);
@@ -23,7 +23,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "  ";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         Assert.assertNull(actualMeasure);
     }
@@ -31,7 +31,7 @@ public class ParseMeasureTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnExceptionIfInputStringIsNull() throws Exception {
         //when
-        ParseMeasure.parseMeasure(null);
+        ParseUtil.parseMeasure(null);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature= 12 *C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12d, actualMeasure.getValue(), 0.0);
@@ -50,7 +50,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature =12.00 *C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12d, actualMeasure.getValue(), 0.0);
@@ -61,7 +61,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Te mper at ure = 12.001 *C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);
@@ -72,7 +72,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature = 12.Fds001 *C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);
@@ -83,7 +83,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature = 12.001*C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);
@@ -94,7 +94,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature=12.001*C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);
@@ -105,7 +105,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature 12.001*C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);
@@ -116,7 +116,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature = 51 = 12.001*C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);
@@ -127,7 +127,7 @@ public class ParseMeasureTest {
         //given
         String inputString = "Temperature = 12.001 * C";
         //when
-        Measure actualMeasure = ParseMeasure.parseMeasure(inputString);
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
         //then
         assert actualMeasure != null;
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);

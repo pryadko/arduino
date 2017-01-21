@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface DataService {
 
+    void writeMeasure(Measure measure);
+
     void writeMeasure(String string);
 
     void createTypeMeasure(String name);
