@@ -14,7 +14,6 @@ import java.util.List;
 @Repository
 public class TypeMeasureDaoImpl implements TypeMeasureDao {
 
-    @Autowired
     SessionFactory sessionFactory;
 
     @Override

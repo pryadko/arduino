@@ -18,7 +18,6 @@ import java.util.List;
 @Repository
 public class MeasureDaoImpl implements MeasureDao {
 
-    @Autowired
     SessionFactory sessionFactory;
 
     @Override
