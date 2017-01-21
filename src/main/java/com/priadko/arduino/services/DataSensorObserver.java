@@ -1,18 +1,17 @@
 package com.priadko.arduino.services;
 
+import com.priadko.arduino.hardware.SerialPortListener;
 import com.priadko.arduino.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.Observable;
-import java.util.Observer;
-
-public class DataSensorObserver implements Observer {
+@Service
+public class DataSensorObserver {
 
     @Autowired
-    private DataService dataService;
-
-    @Override
-    public void update(Observable o, Object arg) {
-        dataService.writeMeasure(ParseUtil.parseMeasure((String) arg));
+    public DataSensorObserver(SerialPortListener serialPort, DataService dataService) {
+        serialPort.addObserver(
+                (o, arg) ->
+                        dataService.writeMeasure(ParseUtil.parseMeasure((String) arg)));
     }
 }
