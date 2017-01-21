@@ -45,6 +45,6 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="serialPortListener" class="com.priadko.arduino.hardware.SerialPortListener"/>
+    <bean id="serialPortListener" class="com.priadko.arduino.hardware.SerialPortDataSource"/>
 
 </beans>

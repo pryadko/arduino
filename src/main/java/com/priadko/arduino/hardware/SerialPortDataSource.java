@@ -15,7 +15,7 @@ import java.util.Enumeration;
 import java.util.Observable;
 
 @Service
-public class SerialPortListener extends Observable implements SerialPortEventListener {
+public class SerialPortDataSource extends Observable implements SerialPortEventListener {
 
     private SerialPort serialPort;
     /**
