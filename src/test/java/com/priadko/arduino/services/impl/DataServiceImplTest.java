@@ -30,6 +30,7 @@ import java.util.List;
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 @DatabaseSetup("/dbunit/beginnerData.xml")
+@Ignore
 public class DataServiceImplTest {
 
     @Autowired
