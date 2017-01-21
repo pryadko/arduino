@@ -7,6 +7,7 @@ import gnu.io.SerialPortEventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -109,6 +110,7 @@ public class SerialPortListener extends Observable implements SerialPortEventLis
      * This should be called when you stop using the port.
      * This will prevent port locking on platforms like Linux.
      */
+    @PreDestroy
     public synchronized void close() {
         if (serialPort != null) {
             serialPort.removeEventListener();
