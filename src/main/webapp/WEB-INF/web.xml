@@ -25,10 +25,6 @@
         </listener-class>
     </listener>
 
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
-
     <servlet-mapping>
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/rest/*</url-pattern>
