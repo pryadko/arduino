@@ -8,4 +8,7 @@ install local env
 2) for linux system user need access to port:
     sudo usermod -a -G dialout $USER
     # and relogin
+3)
+    We may face with some problem, try to run this command
+    sudo apt-get remove modemmanager
 
