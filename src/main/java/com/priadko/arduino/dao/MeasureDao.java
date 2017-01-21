@@ -1,22 +1,12 @@
 package com.priadko.arduino.dao;
 
 import com.priadko.arduino.entry.Measure;
+import com.priadko.arduino.entry.TypeMeasure;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.Calendar;
 import java.util.List;
 
-public interface MeasureDao {
-    void create(Measure measure);
+public interface MeasureDao extends CrudRepository<Measure, Long> {
 
-    void delete(Measure measure);
-
-    List getAll();
-
-    List getMeasureByType(String name);
-
-    Measure getLastValuesByType(String name);
-
-    List getValuesByPeriod(String name, Calendar time1, Calendar time2);
-
-    Double getAvgValueByPeriod(String name, Calendar time1, Calendar time2);
 }

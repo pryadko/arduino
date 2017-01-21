@@ -1,16 +1,12 @@
 package com.priadko.arduino.dao;
 
 import com.priadko.arduino.entry.TypeMeasure;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface TypeMeasureDao {
-    void create(TypeMeasure typeMeasure);
+public interface TypeMeasureDao extends CrudRepository<TypeMeasure, Long> {
 
-    void delete(TypeMeasure typeMeasure);
-
-    List getAll();
-
-    TypeMeasure getTypeMeasureByName(String name);
+    TypeMeasure findByName(String s);
 
 }
