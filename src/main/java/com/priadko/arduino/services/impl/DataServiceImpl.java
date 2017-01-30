@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Observable;
 
 @Service
-public class DataServiceImpl implements DataService {
+public class DataServiceImpl extends Observable implements DataService {
     final private MeasureDao measureDao;
     final private TypeMeasureDao typeMeasureDao;
 
@@ -25,13 +26,18 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public void writeMeasure(String string) {
-        Measure measure = ParseUtil.parseMeasure(string);
+    public Measure writeMeasure(String string) {
+        Measure rawMeasure = ParseUtil.parseMeasure(string);
 
-        if (measure == null) {
-            return;
+        if (rawMeasure == null) {
+            return null;
         }
+        Measure measure = prepare(rawMeasure);
 
+        return measureDao.save(measure);
+    }
+
+    private Measure prepare(Measure measure) {
         String nameOfTypeMeasure = measure.getTypeMeasure().getName();
         TypeMeasure typeMeasure = typeMeasureDao.findByName(nameOfTypeMeasure);
         if (typeMeasure == null) {
@@ -44,7 +50,7 @@ public class DataServiceImpl implements DataService {
         Date date = new Date(cal.getTimeInMillis());
         measure.setDateTime(new Timestamp(date.getTime()));
 
-        measureDao.save(measure);
+        return measure;
     }
 
     @Override
