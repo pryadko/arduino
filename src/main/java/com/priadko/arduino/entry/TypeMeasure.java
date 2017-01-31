@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -44,5 +45,19 @@ public class TypeMeasure implements Serializable {
 
     public void setMeasureSet(Set<Measure> measureSet) {
         this.measureSet = measureSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeMeasure that = (TypeMeasure) o;
+        return id == that.id &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
