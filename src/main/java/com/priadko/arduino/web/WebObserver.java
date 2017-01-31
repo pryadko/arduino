@@ -2,15 +2,14 @@ package com.priadko.arduino.web;
 
 import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
+import com.priadko.arduino.entry.UiConfig;
 import com.priadko.arduino.services.ApplicationObserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Observer;
 
 @Service
@@ -22,12 +21,13 @@ public class WebObserver {
     @Value("${app.measure.delta}")
     private Double delta;
 
-    private Map<TypeMeasure, Measure> lastValues = new HashMap<>();
+    private final UiConfig uiConfig;
 
     @Autowired
-    public WebObserver(ApplicationObserver applicationObserver, SimpMessagingTemplate webSocket) {
+    public WebObserver(ApplicationObserver applicationObserver, SimpMessagingTemplate webSocket, UiConfig uiConfig) {
         applicationObserver.addObserver(
                 getObserver(webSocket));
+        this.uiConfig = uiConfig;
     }
 
     private Observer getObserver(SimpMessagingTemplate webSocket) {
@@ -35,15 +35,15 @@ public class WebObserver {
             Measure measure = (Measure) arg;
             if (measureTypeAllowed(measure.getTypeMeasure()) && measureChangedEnough(measure)) {
                 webSocket.convertAndSend("/measure", measure);
-                lastValues.put(measure.getTypeMeasure(), measure);
+                uiConfig.putInitialValue(measure.getTypeMeasure().getName(), measure.getValue());
             }
         };
     }
 
     private boolean measureChangedEnough(Measure measure) {
-        Measure oldValue = lastValues.getOrDefault(measure.getTypeMeasure(), new Measure());
+        Double oldValue = uiConfig.getInitialValue(measure.getTypeMeasure().getName());
 
-        return Math.abs(oldValue.getValue() - measure.getValue()) >= delta;
+        return Math.abs(oldValue - measure.getValue()) >= delta;
     }
 
     private boolean measureTypeAllowed(TypeMeasure typeMeasure) {
