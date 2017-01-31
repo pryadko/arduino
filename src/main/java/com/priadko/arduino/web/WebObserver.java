@@ -35,14 +35,15 @@ public class WebObserver {
             Measure measure = (Measure) arg;
             if (measureTypeAllowed(measure.getTypeMeasure()) && measureChangedEnough(measure)) {
                 webSocket.convertAndSend("/measure", measure);
+                lastValues.put(measure.getTypeMeasure(), measure);
             }
         };
     }
 
     private boolean measureChangedEnough(Measure measure) {
-        Measure oldVaue = lastValues.getOrDefault(measure.getTypeMeasure(), new Measure());
-        lastValues.put(measure.getTypeMeasure(), measure);
-        return Math.abs(oldVaue.getValue() - measure.getValue()) >= delta;
+        Measure oldValue = lastValues.getOrDefault(measure.getTypeMeasure(), new Measure());
+
+        return Math.abs(oldValue.getValue() - measure.getValue()) >= delta;
     }
 
     private boolean measureTypeAllowed(TypeMeasure typeMeasure) {
