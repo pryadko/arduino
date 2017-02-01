@@ -17,7 +17,7 @@ public class ConfigurationController {
     }
 
     @MessageMapping("/initial")
-    @SendTo("/config")
+    @SendTo("/measure/initial")
     public UiConfig initial(String initialMessage) {
         
         return uiConfig;
