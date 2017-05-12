@@ -5,7 +5,7 @@ import com.priadko.arduino.entry.TypeMeasure;
 
 public interface DataService {
 
-    Measure writeMeasure(String string);
+    Measure writeMeasure(Measure measure);
 
     TypeMeasure createTypeMeasure(String name);
 

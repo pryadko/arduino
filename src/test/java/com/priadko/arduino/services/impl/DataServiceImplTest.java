@@ -4,10 +4,9 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
-import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.services.DataService;
+import com.priadko.arduino.util.ParseUtil;
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
@@ -34,7 +29,7 @@ import java.util.List;
 public class DataServiceImplTest {
 
     @Autowired
-    DataService dataService;
+    private DataService dataService;
 
     @Test
     @Ignore //it's so impossible situation
@@ -53,7 +48,7 @@ public class DataServiceImplTest {
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void createMeasure() {
         //when
-        dataService.writeMeasure("Temperature = 23 *C");
+        dataService.writeMeasure(ParseUtil.parseMeasure("Temperature = 23 *C"));
     }
 
     @Test
@@ -73,14 +68,7 @@ public class DataServiceImplTest {
     @ExpectedDatabase("/dbunit/beginnerData.xml")
     public void shouldntCreateUndefinedTypeTemperature() {
         //when
-        dataService.writeMeasure("UndefinedType = 100 *C");
-    }
-
-    @Test()
-    @ExpectedDatabase("/dbunit/beginnerData.xml")
-    public void shouldntCreateWithEmptyInput() {
-        //when
-        dataService.writeMeasure(" ");
+        dataService.writeMeasure(ParseUtil.parseMeasure("UndefinedType = 100 *C"));
     }
 
     @Test()
@@ -95,7 +83,7 @@ public class DataServiceImplTest {
 
     @Test()
     @DatabaseSetup("/dbunit/calculetedData.xml")
-    public void shouldReturnMeasureByPeriod() throws Exception{
+    public void shouldReturnMeasureByPeriod() throws Exception {
 /*        //given
         Calendar time1 = Calendar.getInstance();
         Calendar time2 = Calendar.getInstance();
@@ -114,7 +102,7 @@ public class DataServiceImplTest {
 
     @Test()
     @DatabaseSetup("/dbunit/calculetedData.xml")
-    public void shouldReturnAvgMeasureByPeriod() throws Exception{
+    public void shouldReturnAvgMeasureByPeriod() throws Exception {
 /*        //given
         Calendar time1 = Calendar.getInstance();
         Calendar time2 = Calendar.getInstance();
@@ -131,7 +119,7 @@ public class DataServiceImplTest {
 
     @Test()
     @DatabaseSetup("/dbunit/calculetedData.xml")
-    public void shouldReturnEception() throws Exception{
+    public void shouldReturnEception() throws Exception {
 /*        //given
         Calendar time1 = Calendar.getInstance();
         Calendar time2 = Calendar.getInstance();

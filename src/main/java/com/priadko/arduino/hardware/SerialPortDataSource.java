@@ -1,5 +1,7 @@
 package com.priadko.arduino.hardware;
 
+import com.priadko.arduino.entry.Measure;
+import com.priadko.arduino.util.ParseUtil;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -50,8 +52,13 @@ public class SerialPortDataSource extends Observable implements SerialPortEventL
     public void serialEvent(SerialPortEvent serialPortEvent) {
         if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
-                setChanged();
-                notifyObservers(input.readLine());
+                String rawMeasure = input.readLine();
+
+                Measure measure = ParseUtil.parseMeasure(rawMeasure);
+                if(measure != null){
+                    setChanged();
+                    notifyObservers(measure);
+                }
             } catch (Exception e) {
                 System.err.println(e.toString());
             }

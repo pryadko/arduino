@@ -5,7 +5,6 @@ import com.priadko.arduino.dao.TypeMeasureDao;
 import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
 import com.priadko.arduino.services.DataService;
-import com.priadko.arduino.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +25,9 @@ public class DataServiceImpl extends Observable implements DataService {
     }
 
     @Override
-    public Measure writeMeasure(String string) {
-        Measure rawMeasure = ParseUtil.parseMeasure(string);
+    public Measure writeMeasure(Measure measure) {
 
-        if (rawMeasure == null) {
-            return null;
-        }
-        Measure measure = prepare(rawMeasure);
-
-        return measureDao.save(measure);
+        return measureDao.save(prepare(measure));
     }
 
     private Measure prepare(Measure measure) {
