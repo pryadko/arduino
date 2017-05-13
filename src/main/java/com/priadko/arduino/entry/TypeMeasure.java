@@ -8,21 +8,14 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "TYPE_MEASURE")
 public class TypeMeasure implements Serializable {
+    private int id;
+    private String name;
+    private Set<Measure> measureSet;
+    private UnitOfMeasurement unitOfMeasurement;
 
     @Id
     @GeneratedValue
-    @Column(name="TYPE_MEASURE_ID")
-    private int id;
-
-    @Column(name="TYPE_MEASURE_NAME", unique = true)
-    private String name;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "typeMeasure")
-    @JsonIgnore
-    private Set<Measure> measureSet;
-
     public int getId() {
         return id;
     }
@@ -31,6 +24,7 @@ public class TypeMeasure implements Serializable {
         this.id = id;
     }
 
+    @Column(unique = true)
     public String getName() {
         return name;
     }
@@ -39,6 +33,8 @@ public class TypeMeasure implements Serializable {
         this.name = name;
     }
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     public Set<Measure> getMeasureSet() {
         return measureSet;
     }
@@ -47,17 +43,29 @@ public class TypeMeasure implements Serializable {
         this.measureSet = measureSet;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn()
+    public UnitOfMeasurement getUnitOfMeasurement() {
+        return unitOfMeasurement;
+    }
+
+    public void setUnitOfMeasurement(UnitOfMeasurement unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TypeMeasure that = (TypeMeasure) o;
         return id == that.id &&
-                Objects.equals(name, that.name);
+                Objects.equals(name, that.name) &&
+                Objects.equals(measureSet, that.measureSet) &&
+                Objects.equals(unitOfMeasurement, that.unitOfMeasurement);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, measureSet, unitOfMeasurement);
     }
 }

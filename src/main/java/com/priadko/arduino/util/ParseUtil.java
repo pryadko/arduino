@@ -2,6 +2,7 @@ package com.priadko.arduino.util;
 
 import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.entry.TypeMeasure;
+import com.priadko.arduino.entry.UnitOfMeasurement;
 
 public final class ParseUtil {
     public static Measure parseMeasure(String inputString) {
@@ -9,6 +10,8 @@ public final class ParseUtil {
 
         Measure measure = new Measure();
         TypeMeasure typeMeasure = new TypeMeasure();
+        UnitOfMeasurement unitOfMeasurement = new UnitOfMeasurement();
+        typeMeasure.setUnitOfMeasurement(unitOfMeasurement);
         measure.setTypeMeasure(typeMeasure);
 
         String[] st = inputString.split("=");
@@ -23,6 +26,7 @@ public final class ParseUtil {
         }
 
         typeMeasure.setName(param);
+        unitOfMeasurement.setName(value[1]);
         measure.setValue(Double.valueOf(value[0]));
 
         return measure;

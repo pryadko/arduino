@@ -67,6 +67,18 @@ public class ParseMeasureTest {
         Assert.assertEquals(12.001d, actualMeasure.getValue(), 0.0);
     }
 
+    @Test
+    public void shouldParseUnitOfMeasurement() throws Exception {
+        //given
+        String inputString = "Te mper at ure = 12.001 *C";
+        //when
+        Measure actualMeasure = ParseUtil.parseMeasure(inputString);
+        //then
+        assert actualMeasure != null;
+        String actual = actualMeasure.getTypeMeasure().getUnitOfMeasurement().getName();
+        Assert.assertEquals("*C", actual);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testParseMeasureUnsupportedFormat() throws Exception {
         //given

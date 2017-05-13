@@ -1,40 +1,28 @@
 package com.priadko.arduino.entry;
 
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "MEASURE")
 public class Measure implements Serializable {
+    private long id;
+    private double value;
+    private TypeMeasure typeMeasure;
+    private Timestamp dateTime;
 
     @Id
     @GeneratedValue
-    @Column(name="MEASURE_ID")
-    private int id;
-
-    @Column(name="VALUE")
-    private double value;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="type_measure_id")
-    private TypeMeasure typeMeasure;
-
-    @Column(name="DATA_TIME")
-    @Type(type="timestamp")
-    private java.sql.Timestamp dateTime;
-
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    private void setId(int id) {
+    private void setId(long id) {
         this.id = id;
     }
 
+    @Column(nullable = false)
     public double getValue() {
         return value;
     }
@@ -43,6 +31,8 @@ public class Measure implements Serializable {
         this.value = value;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn()
     public TypeMeasure getTypeMeasure() {
         return typeMeasure;
     }
@@ -51,6 +41,7 @@ public class Measure implements Serializable {
         this.typeMeasure = typeMeasure;
     }
 
+    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public Timestamp getDateTime() {
         return dateTime;
     }
