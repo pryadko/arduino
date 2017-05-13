@@ -41,7 +41,8 @@ public class Measure implements Serializable {
         this.typeMeasure = typeMeasure;
     }
 
-    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Version
+    @Column
     public Timestamp getDateTime() {
         return dateTime;
     }
