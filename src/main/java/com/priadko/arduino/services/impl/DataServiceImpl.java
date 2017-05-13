@@ -41,7 +41,7 @@ public class DataServiceImpl implements DataService {
         }
 
         if (typeMeasure == null) {
-            typeMeasure = createTypeMeasure(nameOfTypeMeasure);
+            typeMeasure = createTypeMeasure(nameOfTypeMeasure, unitOfMeasurement);
         }
 
         measure.setTypeMeasure(typeMeasure);
@@ -50,7 +50,8 @@ public class DataServiceImpl implements DataService {
         return measure;
     }
 
-    private UnitOfMeasurement createUnitOfMeasurement(String nameUnitOfMeasurement) {
+    @Override
+    public UnitOfMeasurement createUnitOfMeasurement(String nameUnitOfMeasurement) {
         UnitOfMeasurement unitOfMeasurement = new UnitOfMeasurement();
         unitOfMeasurement.setName(nameUnitOfMeasurement);
 
@@ -58,8 +59,9 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public TypeMeasure createTypeMeasure(String name) {
+    public TypeMeasure createTypeMeasure(String name, UnitOfMeasurement unitOfMeasurement) {
         TypeMeasure typeMeasure = new TypeMeasure();
+        typeMeasure.setUnitOfMeasurement(unitOfMeasurement);
         typeMeasure.setName(name);
 
         return typeMeasureDao.save(typeMeasure);

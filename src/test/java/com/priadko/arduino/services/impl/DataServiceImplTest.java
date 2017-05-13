@@ -55,13 +55,13 @@ public class DataServiceImplTest {
     @ExpectedDatabase("/dbunit/afterCreateTypeMeasure.xml")
     public void createTypeMeasureByName() {
         //when
-        dataService.createTypeMeasure("Altitude");
+        dataService.createTypeMeasure("Altitude", null);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldntCreateIdenticalTypeMeasure() {
         //when
-        dataService.createTypeMeasure("Temperature");
+        dataService.createTypeMeasure("Temperature", null);
     }
 
     @Test()
