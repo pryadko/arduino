@@ -3,7 +3,6 @@ package com.priadko.arduino.services.observer;
 import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.hardware.SerialPortDataSource;
 import com.priadko.arduino.services.DataService;
-import com.priadko.arduino.services.StateMeasures;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

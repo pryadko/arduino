@@ -1,27 +1,31 @@
 Measure:
   List:
-      - name: Temperature
+      - id: 1
+        name: Temperature
         order: 1
         allow: true
         unitOfMeasurementIn: '*C'
         unitOfMeasurementOut: '*C'
         convertTo: '*C,F'
         delta: 0.1
-      - name: Pressure
+      - id: 2
+        name: Pressure
         order: 2
         allow: true
         unitOfMeasurementIn: Pa
         unitOfMeasurementOut: mmHg
         convertTo: Pa,mmHg
         delta: 1
-      - name: Altitude
+      - id: 3
+        name: Altitude
         order: 3
         allow: false
         unitOfMeasurementIn: m
         unitOfMeasurementOut: m
         convertTo: m
         delta: 1
-      - name: Real altitude
+      - id: 4
+        name: Real altitude
         order: 4
         allow: false
         unitOfMeasurementIn: m

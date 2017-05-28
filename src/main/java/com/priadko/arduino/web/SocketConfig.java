@@ -11,15 +11,15 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class SocketConfig implements WebSocketConfigurer {
 
-    private final SocketHandler socketHandler;
+    private final MeasureSocketHandler measureSocketHandler;
 
     @Autowired
-    public SocketConfig(SocketHandler socketHandler) {
-        this.socketHandler = socketHandler;
+    public SocketConfig(MeasureSocketHandler measureSocketHandler) {
+        this.measureSocketHandler = measureSocketHandler;
     }
 
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(socketHandler, "/gs-guide-websocket/")
+        registry.addHandler(measureSocketHandler, "/gs-guide-websocket/")
                 .setAllowedOrigins("*")
                 .withSockJS();
     }

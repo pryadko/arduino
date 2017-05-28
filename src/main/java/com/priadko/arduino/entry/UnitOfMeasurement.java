@@ -1,7 +1,5 @@
 package com.priadko.arduino.entry;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -32,7 +30,7 @@ public class UnitOfMeasurement implements Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @Transient
     public Set<TypeMeasure> getTypeMeasureSet() {
         return typeMeasureSet;
     }
