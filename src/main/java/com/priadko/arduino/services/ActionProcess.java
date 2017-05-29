@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ActionProcess {
@@ -22,12 +25,12 @@ public class ActionProcess {
         return getTextMessage(ActionConstants.INIT_MEASURES, getInitValues(stateMeasures));
     }
 
-    private List<Map<String,Object>> getInitValues(Map<Integer, Measure> stateMeasures) {
-        List<Map<String,Object>> lists = new ArrayList<>();
+    private List<Map<String, Object>> getInitValues(Map<Integer, Measure> stateMeasures) {
+        List<Map<String, Object>> lists = new ArrayList<>();
 
         stateMeasures.forEach((integer, measure) -> {
 
-            Map<String, Object> measureValue = getStringObjectHashMap(integer, measure);
+            Map<String, Object> measureValue = getMessageForInit(integer, measure);
 
             lists.add(measureValue);
         });
@@ -35,12 +38,14 @@ public class ActionProcess {
         return lists;
     }
 
-    private Map<String, Object> getStringObjectHashMap(Integer integer, Measure measure) {
+    private Map<String, Object> getMessageForInit(Integer idMeasure, Measure measure) {
         HashMap<String, Object> measureValue = new HashMap<>();
-        measureValue.put("id", integer);
+
+        measureValue.put("id", idMeasure);
         measureValue.put("name", measure.getTypeMeasure().getName());
         measureValue.put("value", measure.getValue());
         measureValue.put("unitOfMeas", measure.getTypeMeasure().getUnitOfMeasurement().getName());
+
         return measureValue;
     }
 
@@ -49,7 +54,16 @@ public class ActionProcess {
     }
 
     private Map<String, Object> getUpdatedPair(Pair<Integer, Measure> measure) {
-        return getStringObjectHashMap(measure.getKey(), measure.getValue());
+        return getMessageForUpdate(measure.getKey(), measure.getValue());
+    }
+
+    private Map<String, Object> getMessageForUpdate(Integer idMeasure, Measure measure) {
+        HashMap<String, Object> measureValue = new HashMap<>();
+
+        measureValue.put("id", idMeasure);
+        measureValue.put("value", measure.getValue());
+
+        return measureValue;
     }
 
     // TODO need some rework to remove hardcoded string value
