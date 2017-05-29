@@ -15,7 +15,6 @@ public class ApplicationObservable extends Observable {
     @Autowired
     public ApplicationObservable(SerialPortDataSource serialPort, DataService dataService, StateMeasures stateMeasures) {
         serialPort.addObserver(createObserver(dataService, stateMeasures));
-        serialPort.addObserver(createObserver(dataService, stateMeasures));
     }
 
     private Observer createObserver(DataService dataService, StateMeasures stateMeasures) {
