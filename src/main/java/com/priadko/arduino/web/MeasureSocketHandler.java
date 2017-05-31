@@ -1,9 +1,8 @@
 package com.priadko.arduino.web;
 
-import com.priadko.arduino.entry.Measure;
 import com.priadko.arduino.services.ActionProcess;
+import com.priadko.arduino.services.MeasureData;
 import com.priadko.arduino.services.observer.StateMeasures;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
@@ -33,8 +32,8 @@ public class MeasureSocketHandler extends TextWebSocketHandler {
     private Observer getObserver() {
         return (o, value) ->
         {
-            Pair<Integer, Measure> measure = (Pair<Integer, Measure>) value;
-            sendMessage(measure);
+            MeasureData measureData = (MeasureData) value;
+            sendMessage(measureData);
         };
     }
 
@@ -48,12 +47,12 @@ public class MeasureSocketHandler extends TextWebSocketHandler {
         session.sendMessage(actionProcess.createInitMessage(stateMeasures.getCurrentState()));
     }
 
-    private void sendMessage(Pair<Integer, Measure> measure) {
+    private void sendMessage(MeasureData measureData) {
         sessions.removeIf(webSocketSession -> !webSocketSession.isOpen());
 
         sessions.forEach(webSocketSession -> {
                     try {
-                        webSocketSession.sendMessage(actionProcess.createUpdateMessage(measure));
+                        webSocketSession.sendMessage(actionProcess.createUpdateMessage(measureData));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

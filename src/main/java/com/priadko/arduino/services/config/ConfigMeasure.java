@@ -5,12 +5,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @ConfigurationProperties("Measure")
 @Component
 public class ConfigMeasure implements Config {
     private List<ConfigEntry> list = new ArrayList<>();
 
+    @Override
     public List<ConfigEntry> getList() {
         return list;
     }

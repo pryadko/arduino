@@ -19,7 +19,7 @@ Measure:
       - id: 3
         name: Altitude
         order: 3
-        allow: false
+        allow: true
         unitOfMeasurementIn: m
         unitOfMeasurementOut: m
         convertTo: m
@@ -32,5 +32,16 @@ Measure:
         unitOfMeasurementOut: m
         convertTo: m
         delta: 1
-
+toUi:
+    '*C': °C
+    'Pa': Pa
+    'F': F
+    'mmHg': mmHg
+    'm': m
+transformValue:
+    '*C*C': 1
+    '*CF': 1
+    'PammHg': 0.0075006375541921
+    'PaPa': 1
+    'mm': 1
 

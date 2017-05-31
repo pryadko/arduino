@@ -1,16 +1,11 @@
 package com.priadko.arduino.services;
 
 import com.google.gson.Gson;
-import com.priadko.arduino.entry.Measure;
-import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ActionProcess {
@@ -21,49 +16,22 @@ public class ActionProcess {
     private static final String CHANNEL = "channel";
     private static final String REDUX = "redux";
 
-    public WebSocketMessage<?> createInitMessage(Map<Integer, Measure> stateMeasures) {
-        return getTextMessage(ActionConstants.INIT_MEASURES, getInitValues(stateMeasures));
+    public WebSocketMessage<?> createInitMessage(Collection<MeasureData> measureDatas) {
+        return getTextMessage(ActionConstants.INIT_MEASURES, getInitValues(measureDatas));
     }
 
-    private List<Map<String, Object>> getInitValues(Map<Integer, Measure> stateMeasures) {
+    private List<Map<String, Object>> getInitValues(Collection<MeasureData> measureDatas) {
         List<Map<String, Object>> lists = new ArrayList<>();
 
-        stateMeasures.forEach((integer, measure) -> {
+        measureDatas.forEach(measureData -> lists.add(measureData.getMessageForInit()));
 
-            Map<String, Object> measureValue = getMessageForInit(integer, measure);
-
-            lists.add(measureValue);
-        });
+        lists.sort(Comparator.comparingInt(o -> (Integer) o.get("id")));
 
         return lists;
     }
 
-    private Map<String, Object> getMessageForInit(Integer idMeasure, Measure measure) {
-        HashMap<String, Object> measureValue = new HashMap<>();
-
-        measureValue.put("id", idMeasure);
-        measureValue.put("name", measure.getTypeMeasure().getName());
-        measureValue.put("value", measure.getValue());
-        measureValue.put("unitOfMeas", measure.getTypeMeasure().getUnitOfMeasurement().getName());
-
-        return measureValue;
-    }
-
-    public WebSocketMessage<?> createUpdateMessage(Pair<Integer, Measure> measure) {
-        return getTextMessage(ActionConstants.UPDATE_MEASURE, getUpdatedPair(measure));
-    }
-
-    private Map<String, Object> getUpdatedPair(Pair<Integer, Measure> measure) {
-        return getMessageForUpdate(measure.getKey(), measure.getValue());
-    }
-
-    private Map<String, Object> getMessageForUpdate(Integer idMeasure, Measure measure) {
-        HashMap<String, Object> measureValue = new HashMap<>();
-
-        measureValue.put("id", idMeasure);
-        measureValue.put("value", measure.getValue());
-
-        return measureValue;
+    public WebSocketMessage<?> createUpdateMessage(MeasureData measureData) {
+        return getTextMessage(ActionConstants.UPDATE_MEASURE, measureData.getUpdate());
     }
 
     // TODO need some rework to remove hardcoded string value
