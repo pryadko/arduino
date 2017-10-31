@@ -1,7 +1,6 @@
 package com.priadko.arduino.services.observer;
 
 import com.priadko.arduino.entry.Measure;
-import com.priadko.arduino.hardware.SerialPortDataSource;
 import com.priadko.arduino.services.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,8 @@ import java.util.Observer;
 public class ApplicationObservable extends Observable {
 
     @Autowired
-    public ApplicationObservable(SerialPortDataSource serialPort, DataService dataService, StateMeasures stateMeasures) {
-        serialPort.addObserver(createObserver(dataService, stateMeasures));
+    public ApplicationObservable(DataService dataService, StateMeasures stateMeasures) {
+
     }
 
     private Observer createObserver(DataService dataService, StateMeasures stateMeasures) {
