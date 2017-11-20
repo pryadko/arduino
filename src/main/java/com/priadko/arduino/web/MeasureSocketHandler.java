@@ -40,6 +40,7 @@ public class MeasureSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        System.out.println("d(WebSocketSession ");
         super.afterConnectionEstablished(session);
 
         sessions.add(session);

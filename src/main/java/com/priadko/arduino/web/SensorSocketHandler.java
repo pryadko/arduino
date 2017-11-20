@@ -41,7 +41,7 @@ public class SensorSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 //        super.afterConnectionEstablished(session);
-        System.out.println("");
+     //   System.out.println("");
 //        sessions.add(session);
 //
 //        session.sendMessage(actionProcess.createInitMessage(stateMeasures.getCurrentState()));
@@ -50,14 +50,14 @@ public class SensorSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        System.out.println("");
+     //   System.out.println("");
       //  super.handleMessage(session, message);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        System.out.println("");
-      //  super.handleTextMessage(session, message);
+    //    System.out.println("");
+       super.handleTextMessage(session, message);
     }
 
     @Override
