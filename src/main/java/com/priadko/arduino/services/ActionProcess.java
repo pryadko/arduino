@@ -36,7 +36,7 @@ public class ActionProcess {
 
     // TODO need some rework to remove hardcoded string value
     private TextMessage getTextMessage(String action, Object stateMeasures) {
-        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+        Map<Object, Object> objectObjectHashMap = new HashMap<>();
 
         Map<String, Object> type = new HashMap<>();
         type.put(TYPE, action);

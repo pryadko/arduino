@@ -1,17 +1,17 @@
 package com.priadko.arduino.web;
 
+import com.google.gson.Gson;
 import com.priadko.arduino.services.ActionProcess;
 import com.priadko.arduino.services.MeasureData;
 import com.priadko.arduino.services.observer.StateMeasures;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observer;
+import java.util.*;
 
 @Service
 public class MeasureSocketHandler extends TextWebSocketHandler {
@@ -40,7 +40,6 @@ public class MeasureSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("d(WebSocketSession ");
         super.afterConnectionEstablished(session);
 
         sessions.add(session);
